@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt" ng-app="notesApp">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>FeedBack360</title>
+
+<link rel="apple-touch-icon" sizes="57x57" href="resources/image/icon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="resources/image/icon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="resources/image/icon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="resources/image/icon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="resources/image/icon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="resources/image/icon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="resources/image/icon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="resources/image/icon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="resources/image/icon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="resources/image/icon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="resources/image/icon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="resources/image/icon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="resources/image/icon/favicon-16x16.png">
+<link rel="manifest" href="resources/image/icon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="resources/image/icon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+
+<!-- Bootstrap -->
+<link rel="stylesheet"	href="resources/css/bootstrap-min-335.css" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+<style>
+	
+	
+	@media (max-width: 480px) {
+	  h1 {
+	    font-size: 22px;
+	  }
+	  p.titulo-home{font-size: 15px;}
+	}
+	
+	body{
+		background-image: url('resources/image/back-home2.jpg');
+		background-repeat: no-repeat;
+    	background-attachment: fixed;
+    	background-position: center bottom; 
+    	background-size: contain;
+	}
+	.navbar-inverse {background-color: #1E4D70 !important;}
+	#logo-app{width:162px;margin-top:-4px}
+	.titulo-home{font-family:'Open Sans',sans-serif;text-align: center;}
+	.container.content{margin-top:85px}
+	p.titulo-home{font-size:1.5em;text-align:center}
+	.help-block{font-size: 0.9em}
+	.bg-danger{padding: 9px;width: 100%;display: inline-block;text-align: center;color:#9E3E3E;}
+</style>
+</head>
+<body ng-controller="MainCtrl as mainCtrl">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand"><img id="logo-app" src="resources/image/logo-app.png" /></a>
+        </div>
+      </div>
+    </nav>
+	<div class="container content">
+		<h1 class="titulo-home">Deseja conhecer sua equipe, melhor até que suas respectivas mães?</h1>			
+		<p class="titulo-home">Experimente nosso sistema de avaliação de desempenho 360º</p>
+		<div class="row" style="margin-top:20px">
+			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+				<div class="input-group">
+					<input type="email" placeholder="Informe o seu e-mail para iniciar o cadastro" class="input form-control" ng-model="mainCtrl.capanyCreateVO.admin.email">
+		        	<span class="input-group-btn">
+		                <button type="button" class="btn btn btn-primary" onclick="$('#modal-register').modal('show')"> <i class="fa fa-search"></i> Experimentar</button>
+		        	</span>			
+				</div>
+				<span class="help-block"><a href="javascript:$('#modal-login').modal('show')">Acesse sua conta</a> se você já possuir cadastro</span>
+			</div>		
+		</div>
+	</div>
+	
+	<div id="modal-login" class="modal fade">
+	  <div class="modal-dialog">
+	    <div class="modal-content" style="width: 320px;">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title"><img src="resources/image/logo-app-o.png" style="width:160px;" /></h4>
+	      </div>
+	      <div class="modal-body">
+		        <div class="form-group">
+		        	<input type="text" class="form-control" placeholder="E-mail" ng-model="mainCtrl.userLogin.email"/>
+		        </div>
+	   	        <div class="form-group">
+		        	<input type="password" class="form-control" placeholder="Senha" ng-model="mainCtrl.userLogin.password"/>
+		        </div>
+		        <span class="bg-danger" style="padding:5px" ng-show="mainCtrl.errorMsg">{{mainCtrl.errorMsg}}</span>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" ng-click="mainCtrl.login()">Entrar</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	
+	<div id="modal-register" class="modal fade">
+	  <div class="modal-dialog">
+	    <div class="modal-content" style="width: 320px;">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title"><img src="resources/image/logo-app-o.png" style="width:160px;" /></h4>
+	      </div>
+	      <div class="modal-body">
+		        
+		        <div class="form-group">
+		        	<input type="text" class="form-control" placeholder="Nome da sua empresa" ng-model="mainCtrl.capanyCreateVO.company.name"/>
+		        </div>
+		        
+		        <div class="form-group">
+		        	<input type="text" class="form-control" placeholder="Nome completo" ng-model="mainCtrl.capanyCreateVO.admin.name"/>
+		        </div>
+		        
+		        <div class="form-group">
+		        	<input type="text" class="form-control" placeholder="Cargo na empresa" ng-model="mainCtrl.capanyCreateVO.admin.jobTitle"/>
+		        </div>
+		        <!-- 
+		        <div class="form-group">
+		        	<input type="text" class="form-control" placeholder="Departamento" ng-model="mainCtrl.capanyCreateVO.departmentTitle"/>
+		        </div>
+		         -->
+		        <div class="form-group">
+		        	<input type="email" class="form-control" placeholder="Email" ng-model="mainCtrl.capanyCreateVO.admin.email"/>
+		        </div>
+	   	        
+	   	        <div class="form-group">
+		        	<input type="password" class="form-control" placeholder="Senha" ng-model="mainCtrl.capanyCreateVO.admin.password"/>
+		        </div>
+		        
+		        <span class="bg-danger" style="padding:5px" ng-show="mainCtrl.errorMsg">{{mainCtrl.errorMsg}}</span>
+		        
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" ng-click="mainCtrl.resgister()">Criar Minha Conta</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="resources/js/bootstrap-335.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.js"></script>
+	<script>
+	  angular.module('notesApp', [])
+	    .controller('MainCtrl', ['$http', function($http) {
+	      var self = this;
+	      self.userLogin = {};
+	      self.errorMsg=null;
+		  self.capanyCreateVO={};	
+	      
+	      self.login = function() {
+	    	  console.log("teste132-login");
+		    	self.errorMsg=null;
+	        $http.post('api/user/login', self.userLogin)
+	            .then(function(response) {
+	              window.location='application.html#/home';
+	            },function(errResponse) {
+	            	self.errorMsg="Atenção: Usuário e/ou senha incorretos";
+		        });
+	      };
+
+	      self.resgister = function() {
+		      	console.log("teste132");
+		    	self.errorMsg=null;
+		        $http.post('api/company', self.capanyCreateVO)
+		            .then(function(response) {
+		              window.location='application.html#/home';
+		            },function(errResponse) {
+		            	self.errorMsg="Não foi possivel criar cadastro";
+			        });
+		      };
+	
+	    }]);
+	</script>
+	
+</body>
+</html>

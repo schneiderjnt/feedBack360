@@ -1,0 +1,59 @@
+<!-- File: chapter6/public/http-post-example.html -->
+<html ng-app="notesApp">
+
+<head>
+  <title>HTTP Post Example</title>
+  <style>
+    .item {
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body ng-controller="MainCtrl as mainCtrl">
+  <h1>Hello Servers!</h1>
+  <div ng-repeat="pessoa in mainCtrl.pessoas"  class="item">
+    <div><span ng-bind="pessoa.nome"></span></div>
+    <div>- by <span ng-bind="pessoa.idade"></span></div>
+  </div>
+
+  <div>
+    <form name="addForm" ng-submit="mainCtrl.add()">
+      <input type="text" placeholder="Nome" ng-model="mainCtrl.newPessoa.nome" required>
+      <input type="number" placeholder="Idade" ng-model="mainCtrl.newPessoa.idade" required>
+      <input type="submit"
+             value="Add"
+             ng-disabled="addForm.$invalid">
+    </form>
+  </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.js"></script>
+<script>
+  angular.module('notesApp', [])
+    .controller('MainCtrl', ['$http', function($http) {
+      var self = this;
+      self.pessoas = [];
+      self.newPessoa = {};
+      var fetchPessoa = function() {
+        return $http.get('api/teste').then(
+            function(response) {
+          self.pessoas = response.data;
+        }, function(errResponse) {
+          console.error('Error while fetching notes');
+        });
+      };
+
+      fetchPessoa();
+
+      self.add = function() {
+        $http.post('api/teste', self.newPessoa)
+            .then(fetchPessoa)
+            .then(function(response) {
+              self.newPessoa = {};
+            });
+      };
+
+    }]);
+</script>
+</body>
+</html>

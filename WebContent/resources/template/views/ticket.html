@@ -1,0 +1,88 @@
+    <div class="container content" role="main" ng-controller="ticketController as mainCtrl">
+    
+    	<div class="page-header">
+        	<h1>Ticket de Avaliação</h1>
+        	<p>Administre as avaliações da sua empresa</p>
+      	</div>
+      	
+      	<p class="bg-warning" ng-show="mainCtrl.tickets.length == 0">Nenhum ticket de avaliação criado até o momento</p>
+      	
+      	<div id="box-table" >
+			<div class="input-group" ng-show="mainCtrl.tickets.length > 0">
+	        	<input type="text" placeholder="Busque por avaliador, avaliado, status ou questionário..." class="input form-control" ng-model="tableFilter">
+	        	<span class="input-group-btn">
+	                <button type="button" class="btn btn btn-primary"> <i class="fa fa-search"></i> buscar</button>
+	        	</span>
+        	</div>  
+        	
+        	<hr/>
+        	
+        	  <div class="input-group">
+				<button type="button" class="btn btn-primary" ng-disabled="mainCtrl.questionnaires.length == 0"  ng-click="mainCtrl.beforeCreate()"><i class="fa fa-plus"></i> &nbsp;Novo Ticket de Avaliação</button>
+			</div> 
+        	
+        	
+	      	<div class="cont-table" ng-show="mainCtrl.tickets.length > 0">
+	          <table class="table table-striped">
+	            <thead>
+	              <tr>
+	                <th>#</th>
+	                <th>Avaliador</th>
+	                <th>Avaliado</th>
+	                <th>Criado</th>
+	                <th>Status</th>
+	                <th>Avaliação</th>
+	                <th>Questionário</th>
+	              </tr>
+	            </thead>
+	            <tbody>
+	              <tr ng-repeat="ticket in mainCtrl.tickets | filter:tableFilter" >
+	                <td ng-bind="ticket.id"></td>
+	                <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2000px-User_icon_2.svg.png"  width="40"/><b>{{ticket.fromName}}</b></td>
+	                <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2000px-User_icon_2.svg.png"  width="40"/><b>{{ticket.targetName}}</b></td>
+	                <td><small>{{ticket.create | date:'dd/MM/yyyy'}}<br>{{ticket.create | date:'HH:mm'}}</small></td>
+	                <td><span class="label {{ticket.status == 'ANSWERED'?'label-primary':'label-default'}}" ng-bind="mainCtrl.status[ticket.status]"></span></td>
+	                <td><small>{{ticket.answered | date:'dd/MM/yyyy'}}<br>{{ticket.answered | date:'HH:mm'}}</small></td>
+	                <td ng-bind="ticket.questionnaireTitle"></td>
+	              </tr>
+	            </tbody>
+	          </table>
+	        </div>
+	        
+	        <p class="bg-warning" ng-show="mainCtrl.questionnaires.length == 0">Ainda não é possivel criar um ticket de avaliação pois nenhum questionário foi criado até o momento.</p>
+	        
+	      
+        </div>
+                
+        <div id="box-form" style="display:none">
+        	<h3>Novo Ticket de Avaliação</h3>
+        	<hr>
+      		<form name="addForm" ng-submit="mainCtrl.save()">
+				<div class="form-group">
+					<label for="name">Avaliador</label> 
+					<select name="avaliador" class="form-control" ng-model="mainCtrl.ticket.fromId" required>
+						<option ng-repeat="user in mainCtrl.users" value="{{user.id}}">{{user.name}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="name">Avaliado</label> 
+					<select name="avaliado" class="form-control" ng-model="mainCtrl.ticket.targetId" required>
+						<option ng-repeat="user in mainCtrl.users" value="{{user.id}}">{{user.name}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="name">Questionário</label> 
+					<select name="questionario" class="form-control" ng-model="mainCtrl.ticket.questionnaireId" required>
+						<option ng-repeat="quest in mainCtrl.questionnaires" value="{{quest.id}}">{{quest.title}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary" >Salvar</button>
+					<button type="reset" class="btn btn-default" onclick="$('#box-table').slideToggle();$('#box-form').slideToggle();">Cancelar</button>
+				</div>
+			</form>
+      	</div>
+      	<!-- 
+      	<pre>{{mainCtrl.userSession | json}} </pre>
+      	 -->
+    </div>

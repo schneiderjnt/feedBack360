@@ -1,0 +1,72 @@
+
+<div class="container content" role="main" ng-controller="departmentController as mainCtrl">
+
+	<div class="page-header">
+		<h1>Departamentos</h1>
+		<p>Administre os departamentos da sua empresa</p>
+	</div>
+
+	<div id="box-user-table">
+		
+		<div class="input-group">
+	        <input type="text" placeholder="Busque por título ou gerente..." class="input form-control" ng-model="tableFilter">
+	        <span class="input-group-btn">
+	                <button type="button" class="btn btn btn-primary"> <i class="fa fa-search"></i> buscar</button>
+	        </span>
+        </div>
+		<hr/>
+		<div ng-if="mainCtrl.userSession.session.admin" class="input-group">
+			<button type="button" class="btn btn-primary" ng-click="mainCtrl.beforeCreate()"><i class="fa fa-plus"></i> Novo departamento</button>
+		</div>
+		
+		<div class="cont-table">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Título</th>
+						<th>Gerente</th>
+						<th>Funcionários</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr	ng-repeat="department in mainCtrl.departments | filter:tableFilter">
+						<td ng-bind="department.id"></td>
+						<td ng-bind="department.title"></td>
+						<td ng-bind="department.managerName"></td>
+						<td ng-bind="department.userQty">pessoas</td>
+						<td class="td-acoes"><button type="button" class="btn btn-sm btn-primary" ng-click="mainCtrl.beforeEdit(department)"><i class="fa fa-pencil-square-o"></i></button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		
+
+	</div>
+
+	<div id="box-user-form" class="row" style="display: none">
+		<div class="col-md-12">
+			<form name="addForm" ng-submit="mainCtrl.save()">
+
+				<div class="form-group">
+					<label for="name">Gerente</label> 
+					<select name="department" class="form-control" ng-model="mainCtrl.newDepartment.managerId"	required>
+						<option ng-repeat="user in mainCtrl.users" value="{{user.id}}">{{user.name}}</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="name">Título</label> 
+					<input type="text" class="form-control" name="name" placeholder="Título do departamento"	ng-model="mainCtrl.newDepartment.title" required>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Salvar</button>
+				<button type="reset" class="btn btn-default" onclick="$('#box-user-table').slideToggle();$('#box-user-form').slideToggle();">Cancelar</button>
+
+			</form>
+		</div>
+	</div>
+
+</div>

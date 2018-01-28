@@ -1,0 +1,61 @@
+<div class="container content" role="main" ng-controller="ratingController as mainCtrl">
+		<div class="page-header">
+        	<h1>Resultado da Avaliação</h1>
+      	</div>
+      	      	                
+        <div id="box-form" class="row">
+	      	<div class="col-md-12">
+	      		<form name="addForm" ng-submit="mainCtrl.save()" novalidate>
+						
+					<h3>Funcionário Avaliado</h3>
+						
+					<div class="media">
+					  <div class="media-left">
+					      <img class="media-object" width="180" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2000px-User_icon_2.svg.png" alt="...">
+					  </div>
+					  <div class="media-body">
+					    <ul class="list-group">
+						  <li class="list-group-item" style="font-weight:bold "><i class="fa fa-user"></i>&nbsp; {{mainCtrl.rating.target.name}}</li>
+						  <li class="list-group-item"><i class="fa fa-envelope" title="E-mail"></i>&nbsp; {{mainCtrl.rating.target.email}}</li>
+						  <li class="list-group-item"><i class="fa fa-gear" title="Cargo"></i>&nbsp; {{mainCtrl.rating.target.jobTitle}}</li>
+						  <li class="list-group-item"><i class="fa fa-group" title="Departamento"></i>&nbsp; {{mainCtrl.rating.target.department.title}}</li>
+						</ul>
+					  </div>
+					</div>
+					<hr>
+					<!-- 
+					<pre>
+					{{mainCtrl.rating | json}}					
+					</pre>
+					 -->
+					<h3>Avaliações do Funcionário</h3>
+					
+					<p class="bg-warning" ng-show="mainCtrl.rating.questionnaires.length == 0">Nenhuma avaliação foi realizada para o funcionário até o momento</p>
+					
+					<div class="form-group" ng-show="mainCtrl.rating.questionnaires.length > 0">
+						<label for="name">Seleciona um questionário para ver o resultado</label> 
+						<select name="department" class="form-control" ng-model="mainCtrl.indexQuest"  ng-change="mainCtrl.selectQuest()" required>
+							<option ng-repeat="quest in mainCtrl.rating.questionnaires" value="{{mainCtrl.rating.questionnaires.indexOf(quest)}}">{{quest.title}}</option>
+						</select>
+					</div>
+					<hr>
+					<h4>{{mainCtrl.questionnaire.title}} <small>{{mainCtrl.questionnaire.description}}</small></h4>
+					<hr>
+					<div class="form-group" ng-repeat="quest in mainCtrl.questionnaire.questions">
+						
+						<ul class="list-group">
+							<li class="list-group-item" style="background-color: #337ab7;color:#fff;"><label><i>#{{$index+1}}</i> - {{quest.text}} </label></li>
+							<li class="list-group-item" ng-repeat="opt in quest.options" value="{{opt.id}}">
+								{{opt.rate}} | ({{opt.count}}/{{mainCtrl.questionnaire.count}}) -  {{opt.text}}
+								<div class="progress">
+									<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width:{{opt.rate}};background-color:#B4C3D0">			
+										{{opt.rate}}
+									</div>
+								</div>					
+							</li>
+						</ul>
+					</div>
+				</form>
+	      	</div>
+      	</div>
+</div>      	

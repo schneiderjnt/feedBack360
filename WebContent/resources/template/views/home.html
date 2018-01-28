@@ -1,0 +1,29 @@
+    <div class="container content" role="main" ng-controller="homeController as mainCtrl">
+    
+    	<div class="page-header">
+        	<h1>Home <small> Dashboard</small></h1>
+      	</div>
+      	
+      	<h3>Minha Avaliação</h3>
+      	<p>Abre a pagina contendo o resumo das avaliações que outros funcionários fizeram sobre você</p>
+      	<a href="#/rating/{{mainCtrl.userSession.session.user.id}}" class="btn btn-primary" title="Abre a pagina contendo o resumo das avaliações que outros funcionários fizeram sobre você"><i class="fa fa-star"></i> Abrir Minhas Avaliações</a>
+      	<hr>
+      	<h3>Avaliações Pendentes</h3>
+      	<p>Abaixo segue a lista de avaliações designadas para você realizar</p>
+      	<p class="bg-warning" ng-show="mainCtrl.tickets.length == 0">Nenhuma avaliação pendente para você no momento.</p>      	
+      	<div class="media avalia-list" ng-repeat="tck in mainCtrl.tickets">
+		  <div class="media-left media-top">
+		      <img class="media-object" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2000px-User_icon_2.svg.png" width="100px" alt="foto de {{tck.targetName}}">
+		  </div>
+		  <div class="media-body">
+		    <ul class="list-group">
+			  <li class="list-group-item" style="font-weight:bold "><i class="fa fa-user" title="Funcionário que será avaliado"></i>&nbsp; {{tck.targetName}}</li>
+			  <li class="list-group-item"><i class="fa fa-calendar" title="Data de criação"></i>&nbsp; {{tck.create | date:'dd/MM/yyyy HH:mm'}}</li>
+			  <li class="list-group-item"><a href="#/answer/{{tck.id}}" class="btn btn-primary" title="Inicia o preenchiamento do formulario para avaliação do funcionário"><i class="fa fa-check-square-o"></i> Iniciar Avaliação</a> </li>
+			</ul>
+		  </div>
+		</div>
+		<!-- 
+      	<pre>{{mainCtrl.userSession | json}} </pre>
+      	 -->
+    </div>

@@ -1,0 +1,111 @@
+    <div class="container content" role="main" ng-controller="questionnaireController as mainCtrl">
+    
+    	<div class="page-header">
+        	<h1>Questionários</h1>
+        	<p>Administre os questionários da sua empresa</p>
+      	</div>
+      	
+      	<div id="box-table">
+			<div class="input-group">
+	        	<input type="text" placeholder="Busque por título ou descrição..." class="input form-control" ng-model="tableFilter">
+	        	<span class="input-group-btn">
+	                <button type="button" class="btn btn btn-primary"> <i class="fa fa-search"></i> buscar</button>
+	        	</span>
+        	</div>
+        	
+        	<hr/>
+        	        	
+        	 <div ng-if="mainCtrl.userSession.session.admin"  class="input-group">
+				<button type="button" class="btn btn-primary" ng-click="mainCtrl.beforeCreate()"><i class="fa fa-plus"></i> Novo Questionário</button>
+			</div> 
+        	
+        	
+        	
+	      	<div class="cont-table">
+	          <table class="table table-striped">
+	            <thead>
+	              <tr>
+	                <th>#</th>
+	                <th>Título</th>
+	                <th>Descrição</th>
+	                <th>Questões</th>
+	                <th></th>
+	              </tr>
+	            </thead>
+	            <tbody>
+	              <tr ng-repeat="quest in mainCtrl.questionnaires | filter:tableFilter" >
+	                <td ng-bind="quest.id"></td>
+	                <td ng-bind="quest.title"></td>
+	                <td>{{quest.description | limitTo:80}}...</td>
+	                <td ng-bind="quest.questionQty"></td>
+	                <td class="td-acoes"><button type="button" class="btn btn-sm btn-primary" ng-click="mainCtrl.beforeEdit(quest)"><i class="fa fa-pencil-square-o"></i></button></td>
+	              </tr>
+	            </tbody>
+	          </table>
+	        </div>
+	       
+        </div>
+        
+        
+        <div id="box-form" class="row" style="display:none">
+	      	<div class="col-md-12">
+	      		<form name="addForm" ng-submit="mainCtrl.save()">
+					<div class="form-group">
+						<label for="name">Título</label> 
+						<input type="text" class="form-control" name="name" placeholder="Título" ng-model="mainCtrl.questionnaire.title" required>
+					</div>
+					<div class="form-group">
+						<label for="name">Descrição</label> 
+						<input type="text" class="form-control" name="name" placeholder="Breve descrição" ng-model="mainCtrl.questionnaire.description" required>
+					</div>
+					<hr>
+					<h4>Questões <small> Questões e respectivas alternativas deste questionário</small></h4>
+					<div class="form-group">
+						<ul class="list-group">
+						  <li ng-repeat="quest in mainCtrl.questionnaire.question" class="list-group-item">
+						  	<div class="form-group">
+							  	<label for="name">{{$index+1}}º Questão</label> 
+							  	<div class="input-group">
+								  	<input type="text" class="form-control" placeholder="Informe o texto da questão. Ex: Qual a sua cor predileta" ng-model="quest.text" required/>
+								  	<span class="input-group-btn">
+	        							<button class="btn btn-danger" type="button" ng-click="mainCtrl.removeQuestion(quest)"><i class="fa fa-trash-o"></i></button>
+	      							</span>
+								</div>
+							</div>		  	
+						  	<div class="form-group">						  	
+							  	<label for="name">Alternativas</label>
+							  	<ul class="list-group" style="list-style: none;">
+							  		<li ng-repeat="opt in quest.options" class="list-group-item-opt">
+							  			<div class="form-group">
+							  				<div class="input-group">
+								  				<input type="text" class="form-control" placeholder="Informe o texto de uma possivel alternativa para a questão. Ex: Azul" ng-model="opt.text"/>
+								  				<span class="input-group-btn">
+		        									<button class="btn btn-danger" type="button" ng-click="mainCtrl.removeOption(quest,opt)"><i class="fa fa-trash-o"></i></button>
+		      									</span>
+	      									</div>
+							  			</div>	
+							  		</li>
+							  	</ul>
+						  	</div>
+						  	<hr>
+						  	<span class="input-group">
+        						<button class="btn btn-primary btn-sm" type="button" ng-click="mainCtrl.addOption(quest)"><i class="fa fa-plus-square"></i>&nbsp; Adicionar Alternaviva</button>
+      						</span>
+						  </li>
+						</ul>
+					</div>
+					<div class="form-group">
+						<button type="button" ng-click="mainCtrl.addQuestion()" class="btn btn-primary" ><i class="fa fa-plus"></i> Adicionar Questão</button>
+					</div>
+					<hr>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary" >Salvar</button>
+						<button type="reset" class="btn btn-default" onclick="$('#box-table').slideToggle();$('#box-form').slideToggle();">Cancelar</button>
+					</div>
+				</form>
+				<!--  
+				<pre>{{mainCtrl.questionnaire | json}}</pre>
+				-->
+	      	</div>
+      	</div>
+    </div>

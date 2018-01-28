@@ -1,0 +1,88 @@
+    <div class="container content" role="main" ng-controller="userController as mainCtrl">
+    
+    	<div class="page-header">
+        	<h1>Usuários</h1>
+        	<p>Administre todos os usuários da sua empresa</p>
+      	</div>
+      	
+      	<div id="box-user-table">
+			
+			<div class="input-group">
+                <input type="text" placeholder="Busque por nome, cargo, departamento..." class="input form-control" ng-model="tableFilter">
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn btn-primary"> <i class="fa fa-search"></i> buscar</button>
+                </span>
+            </div>
+            
+            <hr/>
+            
+			<div ng-if="mainCtrl.userSession.session.admin" class="input-group">
+				<button type="button" class="btn btn-primary" ng-click="mainCtrl.beforeCreate()" ><i class="fa fa-user-plus"></i> Novo usuárioss</button>
+			</div>
+	      	<div class="cont-table">
+	          <table class="table table-striped">
+	            <thead>
+	              <tr>
+	                <th>#</th>
+	                <th></th>
+	                <th>Nome</th>
+	                <th class="hidden-xs">Cargo</th>
+	                <th class="hidden-xs">Email</th>
+	                <th>Departamento</th>
+	                <th></th>
+	              </tr>
+	            </thead>
+	            <tbody>
+	              <tr ng-repeat="user in mainCtrl.users | filter:tableFilter" >
+	                <td ng-bind="user.id"></td>
+	                <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2000px-User_icon_2.svg.png"  width="40"/></td>
+	                <td ng-bind="user.name" style="font-weight: bold"></td>
+	                <td ng-bind="user.jobTitle"></td>
+	                <td class="hidden-xs" ><i class="fa fa-envelope"></i> {{user.email}} </td>
+	                <td ng-bind="user.department.title"></td>
+	                <td class="td-acoes">
+	                	<button ng-if="mainCtrl.userSession.session.admin" type="button" class="btn btn-sm btn-primary" ng-click="mainCtrl.beforeEdit(user)"><i class="fa fa-pencil-square-o"></i></button>
+	                	<a href="#/rating/{{user.id}}" class="btn btn-sm btn-primary"><i class="fa fa-bar-chart"></i></a>
+	              </tr>
+	            </tbody>
+	          </table>
+	        </div>
+	        
+        </div>
+                
+        <div id="box-user-form" class="row" style="display:none">
+	      	<div class="col-md-12">
+	      		<form name="addForm" ng-submit="mainCtrl.save()">
+
+					<div class="form-group">
+						<label for="name">Departamento</label> 
+						<select name="department" class="form-control" ng-model="mainCtrl.newUser.departmentId" required>
+							<option ng-repeat="dpt in mainCtrl.departments" value="{{dpt.id}}">{{dpt.title}}</option>
+						</select>
+					</div>
+					
+					<div class="form-group">
+						<label for="name">Nome</label> 
+						<input type="text" class="form-control" name="name" placeholder="Nome Completo" ng-model="mainCtrl.newUser.name" required>
+						<span class="help-block" ng-show="addForm.name.$error.required && addForm.name.$dirty">Por favor informe o seu nome completo.</span>
+					</div>
+					
+					<div class="form-group">
+						<label for="jobtitle">Cargo</label> 
+						<input type="text" class="form-control" name="jobtitle" placeholder="Cargo na empresa" ng-model="mainCtrl.newUser.jobTitle" required>
+					</div>
+					
+					<div class="form-group">
+						<label for="email">Email</label> 
+						<input type="email" class="form-control" name="email" placeholder="Email" ng-model="mainCtrl.newUser.email" required>
+					</div>
+								
+					<button type="submit" class="btn btn-primary" >Salvar</button>
+					<button type="reset" class="btn btn-default" onclick="$('#box-user-table').slideToggle();$('#box-user-form').slideToggle();">Cancelar</button>
+					
+				</form>
+	      	</div>
+      	</div>
+	      	
+    </div>
+    

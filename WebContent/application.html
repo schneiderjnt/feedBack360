@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Ava360App">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <title>Feedback360</title>
+	
+	<link rel="apple-touch-icon" sizes="57x57" href="resources/image/icon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="resources/image/icon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="resources/image/icon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="resources/image/icon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="resources/image/icon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="resources/image/icon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="resources/image/icon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="resources/image/icon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="resources/image/icon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="resources/image/icon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="resources/image/icon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="resources/image/icon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="resources/image/icon/favicon-16x16.png">
+	<link rel="manifest" href="resources/image/icon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="resources/image/icon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	
+   <link rel="stylesheet"	href="resources/css/bootstrap-min-335.css" />
+   <link rel="stylesheet"	href="resources/css/font-awesome-4.4.0/css/font-awesome.min.css" />
+ 
+ 	<style>
+ 		.table{
+ 			color:#7E7F8E !important;
+ 		}
+ 		.title-div{padding: 15px;}
+ 		.cont-table{margin-top:25px}
+ 		 		 		
+ 		.navbar-inverse {
+			background-color: #1E4D70 !important;
+    	}
+ 		#logo-app{width:162px;margin-top:-4px}
+ 		
+ 		.container.content{margin-top:5px}
+ 		
+ 		.td-acoes{text-align: right;}
+ 		
+ 		.container.login{margin-top:57px;text-align: right}
+ 		
+ 		.container .avalia-list:not(:last-child){border-bottom: 1px solid #E6E6E6;}
+ 		.bg-warning{padding: 15px;color: #8C5F25;}
+ 		
+ 	</style>
+ 
+  </head>
+
+  <body role="document" >
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="MenuCtrl as menuCtrl">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#home"><img id="logo-app" src="resources/image/logo-app.png" /></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#home">Home</a></li>
+            <li ng-if="menuCtrl.isAdmin || menuCtrl.isManager"><a href="#user">Usuários</a></li>
+            <li ng-if="menuCtrl.isAdmin"><a href="#department">Departamentos</a></li>
+            <li ng-if="menuCtrl.isAdmin"><a href="#questionnaire">Questionários</a></li>
+            <li ng-if="menuCtrl.isAdmin"><a href="#ticket">Avaliações</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    
+    <div class="container login" ng-controller="MenuCtrl as menuCtrl">
+    	<span>Olá {{menuCtrl.userSession.user.name}}, <a href="api/user/logout" title="Sair do sistema.">[sair]</a></span>
+    </div>
+
+    <div ng-view>
+    	    	    		      	
+    </div>
+    
+    <footer class="bs-docs-footer" role="contentinfo">
+    	<div class="container">
+    	<hr></hr>
+    	<span class="help-block">Desenvolvido por Jonathan Schneider-L943171 | Desenvolvimento de Aplicações WEB - 2015</span>
+    	</div>
+    </footer>
+    <!-- 
+     <pre ng-controller="MenuCtrl as menuCtrl">
+    	{{menuCtrl.userSession | json}}
+    </pre>
+     -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="resources/js/bootstrap-335.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-route.js"></script>
+    
+    <script src="resources/js/controllers/application-controllers.js"></script>
+        
+	<script>
+		var app = angular.module('Ava360App', ['ngRoute']);
+
+		app.factory('checkLoginService',['$http',function($http){
+			return{check: function(userSession, callback){
+				 $http.get('api/user/login').then(
+				            function(response) {
+				            	userSession.session = response.data;
+				            	callback();
+				        }, function(errResponse) {
+				          window.location='index.html'; 	          
+				        });
+				}}
+		}]);
+		
+		app.controller('MenuCtrl', ['$http', function($http) {
+		      var self = this;
+			  self.userSession={};
+
+			  	
+			  
+			  self.checkLogin = function() {
+				        return $http.get('api/user/login').then(
+				            function(response) {
+				            	self.userSession = response.data;
+				            	self.isAdmin = 	self.userSession.role.indexOf('ADMIN') > -1;
+				    			self.isManager = self.userSession.role.indexOf('MANAGER') > -1;
+				        }, function(errResponse) {
+				          console.error('Error while fetching notes');
+				        });
+				      };		
+			self.checkLogin();
+
+			
+			
+		  }]);	
+		
+		app.controller('ratingController', ['checkLoginService','$http','$routeParams',ratingController]);
+		app.controller('answerController', ['checkLoginService','$http','$routeParams',answerController]);
+		app.controller('departmentController', ['checkLoginService','$http','$routeParams',departmentController]);
+		app.controller('questionnaireController', ['checkLoginService','$http','$routeParams',questionnaireController]);
+		app.controller('ticketController', ['checkLoginService','$http','$routeParams',ticketController]);
+		app.controller('userController', ['checkLoginService','$http','$routeParams',userController]);
+		app.controller('homeController', ['checkLoginService','$http','$routeParams',homeController]);
+		
+		app.config(['$routeProvider', function($routeProvider){
+
+			$routeProvider
+
+			.when('/rating/:userId',{
+				templateUrl:'resources/template/views/rating.html',
+				controller:'ratingController'
+				})
+			.when('/answer/:ticketId',{
+					templateUrl:'resources/template/views/answer.html',
+					controller:'answerController'
+				})
+			.when('/department',{
+					templateUrl:'resources/template/views/department.html',
+					controller:'departmentController'
+				})
+				
+			.when('/questionnaire',{
+				templateUrl:'resources/template/views/questionnaire.html',
+				controller:'questionnaireController'
+			})
+
+			.when('/ticket',{
+				templateUrl:'resources/template/views/ticket.html',
+				controller:'ticketController'
+			})
+
+			.when('/user',{
+				templateUrl:'resources/template/views/user.html',
+				controller:'userController'
+			})
+
+			.when('/home',{
+				templateUrl:'resources/template/views/home.html',
+				controller:'homeController'
+			})		
+
+		}]);
+	    
+	</script>
+    
+    </body>
+    </html>

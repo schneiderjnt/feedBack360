@@ -1,0 +1,59 @@
+
+<div class="container content" role="main" ng-controller="answerController as mainCtrl">
+
+	<div class="page-header">
+		<h1>Avaliação</h1>
+	</div>
+
+	<div id="box-form" class="row">
+		<div class="col-md-12">
+			<form name="addForm" ng-submit="mainCtrl.save()" novalidate>
+
+				<h3>Funcionário Avaliado</h3>
+
+				<div class="media">
+					<div class="media-left">
+						<img class="media-object" width="180"
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2000px-User_icon_2.svg.png"
+							alt="...">
+					</div>
+					<div class="media-body">
+						<ul class="list-group">
+							<li class="list-group-item" style="font-weight: bold" title="Nome"><i class="fa fa-user"></i>&nbsp; {{mainCtrl.ticket.target.name}}</li>
+							<li class="list-group-item"><i class="fa fa-envelope" title="E-mail"></i>&nbsp; {{mainCtrl.ticket.target.email}}</li>
+							<li class="list-group-item"><i class="fa fa-gear" title="Cargo"></i>&nbsp; {{mainCtrl.ticket.target.jobTitle}}</li>
+							<li class="list-group-item"><i class="fa fa-group" title="Departamento"></i>&nbsp; {{mainCtrl.ticket.target.department.title}}</li>
+						</ul>
+					</div>
+				</div>
+				<hr>
+				<h3>
+					{{mainCtrl.questionnaire.title}} <small>{{mainCtrl.questionnaire.description}}</small>
+				</h3>
+				<hr>
+				<div class="form-group" ng-repeat="quest in mainCtrl.questionnaire.question">
+					<ul class="list-group">
+						<li class="list-group-item" style="background-color: #337ab7;color:#fff;"><label><i>#{{$index+1}}</i> - {{quest.text}} </label></li>
+						<li class="list-group-item">
+							<select	name="questionario" class="form-control" ng-model="mainCtrl.questionnaireAnswer.answers[$index]" required>
+								<option ng-repeat="opt in quest.options" value="{{opt.id}}">{{opt.text}}</option>
+							</select>
+						</li>
+					</ul>
+				</div>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary">Salvar</button>
+				</div>
+				
+				<!-- 
+				<p>
+				<pre>{{mainCtrl.questionnaireAnswer}}</pre>
+				</p>
+ 				-->
+			</form>
+		</div>
+	</div>
+
+</div>
+
